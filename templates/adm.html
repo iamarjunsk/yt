@@ -6,16 +6,16 @@
     <title>Admin
     </title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="jquery-1.7.2.min.js"></script>
-    <script src="js/jquery-1.11.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='tutfrom.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-    <script> var name=localStorage.getItem("admin");</script>
+    
 </head>
-<body onload="retrieve(name)">
+<body >
     <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top mb-5">
-        <a class="navbar-brand" href="#"><img src="yourstutor.png" width="60" height="60" alt=""></a>
+        <a class="navbar-brand" href="#"><img src="{{ url_for('static',filename='yourstutor.png')}}" width="60" height="60" alt=""></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportContent">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -52,9 +52,27 @@
             <div class="tab-pane fade show active w-100 align-content-center align-items-center align-self-center justify-content-center" id="tutor" role="tabpanel" aria-labelledby="home-tab">
                 <center>
                 <div id="list_non_var" class=" align-content-center align-items-center align-self-center justify-content-center">
-                    Loading..
+                    {% for i in tutors %}
+                  <div class="card text-white bg-dark mb-3 align-items-center align-self-center align-content-center justify-content-center" style="max-width: 18rem;">
+                    <div class="card-header w-100">{{i.fname}}</div>
+                    <div class="card-body">
+                      <h5 class=" card-text">{{ i.username }}</h5>
+                      <h5 class="card-text">{{ i.email }}</h5>
+                      <h5 class="card-text">{{ i.phone }}</h5>
+                      <h5 class="card-text">{% if i.ismale %}
+                      Male {% else %} Female {% endif %}</h5>
+                      {# <h5 class="card-text">{{ i.district }}</h5> #}
+                      <h5 class="card-text">{{ i.taluk }}</h5>
+                      <h5 class="card-text">{{ i.village }}</h5>
+                      <a class="btn btn-primary" href="admin/tutor/{{ i.username }}">View</a>
+                    </div>
+                </div>
+            {% endfor %}
                 </div>
             </center>
+            <div class="align-items-center align-self-center align-content-center justify-content-center">
+            
+            </div>
                 <!-- <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
                     <div class="card-header">Header</div>
                     <div class="card-body">

@@ -35,7 +35,7 @@ var dp = function(file,ig) {
           const ctx=elem.getContext('2d');
           ctx.drawImage(image,0,0,500,500);
           const newDataUrl=ctx.canvas.toDataURL(image,"image/jpeg",0.3);
-          output.src=newDataUrl;
+          output.value=newDataUrl;
           console.log(newDataUrl);
       
          

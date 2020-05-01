@@ -4,6 +4,7 @@ from datetime import datetime
 import requests
 import datetime
 from datetime import *
+from io import BytesIO
 
 
 app = Flask(__name__)
@@ -34,7 +35,7 @@ class Tutor_m(db.Model):
     biology=db.Column(db.Boolean, nullable=True, default=False)
     scmaths=db.Column(db.Boolean, nullable=True, default=False)
     extra=db.Column(db.String(100), nullable=True, default='False')
-    image=db.Column(db.LargeBinary, nullable=False, default='False')
+    image=db.Column(db.String(2000), nullable=False, default='False')
     student=db.Column(db.String(30),  default='False')
     earn=db.Column(db.Float,default=0)
     totalearn=db.Column(db.Float,default=0)
@@ -126,7 +127,7 @@ def tutreg():
         username = request.form.get("username")
         name = request.form.get("name")
         ismale=bool(request.form.get("male"))
-        image = request.files['image']
+        image = request.form.get('output3')
         # print(ismale)
         # return(image.read())
         # return(ismale)
@@ -155,7 +156,7 @@ def tutreg():
             #     print('commited')
                 
 
-            user=Tutor_m(fname=name, username=username, email=email, password=password1, dob=dob, phone=phone, qualification=qualification, district=district, taluk=block, village=location, tuition=tuition, maths=maths, science=science, social=social, computer=computer, physics=physics, chemistry=chemistry, biology=biology, scmaths=scmaths, extra=extra, image=image.read(), ismale=ismale )            
+            user=Tutor_m(fname=name, username=username, email=email, password=password1, dob=dob, phone=phone, qualification=qualification, district=district, taluk=block, village=location, tuition=tuition, maths=maths, science=science, social=social, computer=computer, physics=physics, chemistry=chemistry, biology=biology, scmaths=scmaths, extra=extra, image=image, ismale=ismale )            
             db.session.add(user)
             db.session.commit()
             print('commited')
@@ -170,6 +171,15 @@ def tutreg():
     print(missings)  
     return render_template('tutReg.html',tutor='active')
 
+@app.route('/admin',methods=['GET','POST'])
+def admin():
+    tutor=Tutor_m.query.all()
+    return render_template('adm.html',tutors=tutor)
+
+@app.route('/admin/tutor/<username>',methods=['GET','POST'])
+def adtut(username):
+    tutor=Tutor_m.query.filter_by(username=username).first()
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
